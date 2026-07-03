@@ -9,12 +9,18 @@ def play(message: str) -> None:
 
 def main():
     message = ''
+    tone_on = True
     while True:
         response = input('Message: ')
-        if response.upper() == '/X':
+        if response.upper() == '/X':    # exit
             break
-        elif response.upper() == '/R':
+        elif response.upper() == '/R':  # repeat message
             play(message)
+        elif response.upper() == '/T':  # toggle side tone
+            tone_on = not tone_on
+            CWT.set_settings(tone_on=tone_on)
+            out = 'on' if tone_on else 'off'
+            print(f'Side tone is {out}')
         else:
             message = response
             play(message)

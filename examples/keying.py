@@ -4,11 +4,22 @@ from km7fox_cw.encoder.straight_key import StraightKeyer
 def main():
     print('Started...')
 
-    decoder = StraightKeyer().run()
+    sk = StraightKeyer()
+    decoder = sk.run()
+    tone_on = True
+    escape = False
 
     for text in decoder:
-        print(text, end="", flush=True)
-    # pause()   
+        if text == '~':
+            escape = True
+        if escape:
+            if text == 'X ':
+                print('Exiting')
+                break
+            elif text == 'T ':
+                tone_on = not tone_on
+                sk.set_settings(tone_on=tone_on)
+        print(text, end="", flush=True)  
         
 if __name__ == '__main__':
     main()

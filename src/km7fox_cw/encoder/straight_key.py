@@ -22,5 +22,8 @@ class StraightKeyer:
             
     def stop(self):
         pass
+    
+    def set_settings(self, tone_on: bool=True, led_on: bool=True, on_air: bool=False):
+        self.key_handler.set_settings(tone_on=tone_on, led_on=led_on, on_air=on_air)
         
 

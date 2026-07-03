@@ -30,4 +30,7 @@ class CWTransmitter:
 
                 Keyer.key_up(2 * self.time_unit)
                 
+    def set_settings(self, tone_on: bool=True, led_on: bool=True, on_air: bool=False):
+        Keyer.set_settings(tone_on=tone_on, led_on=led_on, on_air=on_air)
+                
     

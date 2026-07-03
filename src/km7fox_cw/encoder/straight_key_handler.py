@@ -29,3 +29,7 @@ class StraightKeyHandler:
         self.key.when_activated = key_down
         self.key.when_deactivated = key_up
         pause()
+        
+    def set_settings(self, tone_on: bool=True, led_on: bool=True, on_air: bool=False):
+        Keyer.set_settings(tone_on=tone_on, led_on=led_on, on_air=on_air)
+        
