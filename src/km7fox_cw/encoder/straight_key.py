@@ -7,7 +7,7 @@ from km7fox_cw.decoder.timing_model import TimingModel
 from km7fox_cw.decoder.decode import Decoder
 
 
-class Keyer:
+class StraightKeyer:
     def __init__(self):
         self.decoder_queue = Queue()
         self.timing = TimingModel()

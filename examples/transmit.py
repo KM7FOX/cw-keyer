@@ -1,10 +1,10 @@
-from km7fox_cw.encoder.sender import Sender
+from km7fox_cw.encoder.cw_transmitter import CWTransmitter
 
 
-S = Sender(13)
+CWT = CWTransmitter(13)
 
 def play(message: str) -> None:
-    S.send(message)
+    CWT.send(message)
     print('Sent!')
 
 def main():
