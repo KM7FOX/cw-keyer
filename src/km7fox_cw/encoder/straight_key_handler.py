@@ -1,4 +1,4 @@
-from gpiozero import TonalBuzzer, LED, Button, DigitalOutputDevice
+from gpiozero import Button
 from signal import pause
 from queue import Queue
 
