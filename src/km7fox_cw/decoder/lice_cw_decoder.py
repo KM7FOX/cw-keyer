@@ -6,7 +6,7 @@ from km7fox_cw.decoder.timing_model import TimingModel
 from km7fox_cw.decoder.decode import Decoder
 
 
-class DecodeStream:
+class LiveCWDecoder:
     def __init__(self):
         self.decode_queue = Queue()
         self.timing = TimingModel()
