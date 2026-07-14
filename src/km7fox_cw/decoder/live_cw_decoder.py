@@ -22,4 +22,3 @@ class LiveCWDecoder:
             yield text
 
     
-        
