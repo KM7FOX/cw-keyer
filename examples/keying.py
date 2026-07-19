@@ -13,7 +13,11 @@ def main():
     for text in decoder:
         if text == '~':
             escape = True
+            continue
+        
         if escape:
+            escape = False
+            
             if text == 'X ':
                 print('Exiting')
                 break
@@ -25,6 +29,7 @@ def main():
                 on_air = not on_air
                 sk.set_settings(on_air=on_air, tone_on=tone_on)
                 print(f'on_air: {on_air}')
+        
         print(text, end="", flush=True)  
         
 if __name__ == '__main__':
