@@ -19,10 +19,12 @@ def main():
                 break
             elif text == 'T ':
                 tone_on = not tone_on
-                sk.set_settings(tone_on=tone_on)
-            elif text == 'A':
+                sk.set_settings(tone_on=tone_on, on_air=on_air)
+                print(f'tone_on: {tone_on}')
+            elif text == 'A ':
                 on_air = not on_air
-                sk.set_settings(on_air=on_air)
+                sk.set_settings(on_air=on_air, tone_on=tone_on)
+                print(f'on_air: {on_air}')
         print(text, end="", flush=True)  
         
 if __name__ == '__main__':
