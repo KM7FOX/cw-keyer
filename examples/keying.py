@@ -1,10 +1,18 @@
+import sys
+
 from km7fox_cw.encoder.straight_key import StraightKeyer
 
 
 def main():
-    print('Started...')
+    smooth = False
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'smooth':
+            smooth = True
+            print('smooth operator ', end='')
+            
+    print('started...')
 
-    sk = StraightKeyer()
+    sk = StraightKeyer(smooth=smooth)
     decoder = sk.run()
     tone_on = True
     on_air = False
@@ -20,6 +28,8 @@ def main():
             
             if text == 'X ':
                 print('Exiting')
+                if smooth:
+                    sk.stop()
                 break
             elif text == 'T ':
                 tone_on = not tone_on
