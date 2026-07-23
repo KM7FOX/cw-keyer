@@ -1,5 +1,5 @@
 from km7fox_cw.encoder.cw_transmitter import CWTransmitter
-
+from sys import exit
 
 CWT = CWTransmitter()
 
@@ -14,7 +14,7 @@ def main():
     while True:
         response = input('Message: ')
         if response.upper() == '/X':    # exit
-            break
+            exit()
         elif response.upper().startswith('/S'):
             try:
                 speed = int(response[2:])

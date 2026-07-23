@@ -28,9 +28,7 @@ def main():
             
             if text == 'X ':
                 print('Exiting')
-                if smooth:
-                    sk.stop()
-                break
+                sys.exit()
             elif text == 'T ':
                 tone_on = not tone_on
                 sk.set_settings(tone_on=tone_on, on_air=on_air)

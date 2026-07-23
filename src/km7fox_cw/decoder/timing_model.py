@@ -1,7 +1,11 @@
+from math import floor
+
+
 class TimingModel:
     def __init__(self):
         self.dit_ms = None
         self.dah_ms = None
+        self.speed = None
         self.ready = False
 
     def try_bootstrap(self, down_durations: list[int]) -> bool:
@@ -17,6 +21,7 @@ class TimingModel:
 
                 if 2.5 <= ratio <= 3.5:
                     self.dit_ms = short
+                    self.speed = floor(1200 / self.dit_ms)
                     self.dah_ms = long
                     self.ready = True
                     self.refine_centers(down_durations)
@@ -52,6 +57,7 @@ class TimingModel:
 
         # accept update
         self.dit_ms = new_dit
+        self.speed = floor(1200 / new_dit)
         self.dah_ms = new_dah
         return True
         

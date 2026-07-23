@@ -9,10 +9,11 @@ class Keyer:
     led_on = True
     on_air = False
     tone = 550
+    smooth = False
     
     buzzer = TonalBuzzer(assignments['buzzer'])
     led = LED(assignments['led'])
-    tx_key = DigitalOutputDevice(assignments['tx_key'], initial_value=False)
+    tx_key = None
     
     @classmethod
     def key_down(cls, timing: float=0.0) -> None:
@@ -20,15 +21,15 @@ class Keyer:
             cls.buzzer.play(cls.tone)
         if cls.led_on:
             cls.led.on()
-        if cls.on_air:
-            cls.tx_key.on()
+        # if cls.on_air:
+        #     cls.tx_key.on()
         sleep(timing)
         
     @classmethod
     def key_up(cls, timing: float=0.0) -> None:
         cls.buzzer.stop()
         cls.led.off()
-        cls.tx_key.off()
+        # cls.tx_key.off()
         sleep(timing)
         
     @classmethod

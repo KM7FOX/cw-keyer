@@ -29,14 +29,12 @@ class EventQueue:
             elapsed = current.timestamp_ns - previous.timestamp_ns
             elapsed //= 1_000_000
             previous.duration_ms = elapsed
-            
             if previous.state == 'DOWN' and elapsed > 0:
                 self.down_times.append(elapsed)
                 
             event = self.dequeue_event()
             self.decoder_queue.put(event)
-            if self.send_queue is not None:
-                self.send_queue.put(event) 
+            self.send_queue.put(event) 
                   
         # Bootstrap timings
         if len(self.down_times) > 1 and not self.timing.ready:
