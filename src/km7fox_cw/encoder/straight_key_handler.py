@@ -3,19 +3,18 @@ from signal import pause
 from queue import Queue
 from threading import Lock, Timer
 
-from km7fox_cw.decoder.events import EventQueue
+from km7fox_cw.events import EventQueue
 from km7fox_cw.decoder.timing_model import TimingModel
 from km7fox_cw.encoder.keyer import Keyer
 from km7fox_cw.encoder.gpio_assignments import assignments
 
 
 class StraightKeyHandler:
-    def __init__(self, timing: TimingModel, decoder_queue: Queue, debug: bool=False):
+    def __init__(self, timing: TimingModel, decoder_queue: Queue, send_queue: Queue=None):
         self.timing = timing
-        self.decoder_queue = decoder_queue
-        self.debug = debug
+        self.send_queue = send_queue
         
-        self.event_queue = EventQueue(self.timing, self.decoder_queue, debug=self.debug)
+        self.event_queue = EventQueue(self.timing, decoder_queue, self.send_queue)
         self.key = Button(assignments['straight_key'], pull_up=True, bounce_time=0.05)
         
         self.timeout_seconds = 2.0
@@ -24,7 +23,8 @@ class StraightKeyHandler:
         
     def run(self):
         def key_down():
-            Keyer.key_down()
+            if self.send_queue is None:
+                Keyer.key_down()
             self.event_queue.enqueue_event('DOWN')
             
             with self.timer_lock:
@@ -36,7 +36,8 @@ class StraightKeyHandler:
             self.timer.start()
 
         def key_up():
-            Keyer.key_up()
+            if self.send_queue is None:
+                Keyer.key_up()
             self.event_queue.enqueue_event('UP')
             
             with self.timer_lock:

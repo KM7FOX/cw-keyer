@@ -1,7 +1,7 @@
 from queue import Queue
 
 
-from km7fox_cw.decoder.events import EventQueue
+from km7fox_cw.events import EventQueue
 from km7fox_cw.decoder.timing_model import TimingModel
 from km7fox_cw.decoder.decode import Decoder
 

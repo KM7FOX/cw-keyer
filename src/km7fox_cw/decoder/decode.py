@@ -2,10 +2,9 @@ from queue import Queue, Empty
 
 from km7fox_cw.decoder.timing_model import TimingModel
 from km7fox_cw.morse import MORSE_CODE
+from km7fox_cw.classify_event import classify_event
 
 
-ELEMENT_THRESHOLD_SCALAR = 2.0
-WORD_GAP_THRESHOLD_SCALAR = 5.0
 EOM_SCALAR = 7.5
 
 class Decoder:
@@ -25,7 +24,7 @@ class Decoder:
             except Empty:
                 token = "<EOM>"
             else:
-                token = self._classify_event(event, self.timing)
+                token = classify_event(event, self.timing)
 
             if token in (".", "-"):
                 event_buffer.append(token)
@@ -42,18 +41,5 @@ class Decoder:
     def _get_char(self, event_buffer: list[str]) -> str:
         code = "".join(event_buffer)
         event_buffer.clear()
-        return MORSE_CODE.get(code, "*")
-                    
-    def _classify_event(self, event, timing) -> str:
-        if event.state == "DOWN":
-            return "-" if event.duration_ms > ELEMENT_THRESHOLD_SCALAR * timing.dit_ms else "."
-
-        if event.duration_ms > WORD_GAP_THRESHOLD_SCALAR * timing.dit_ms:
-            return "<EOW>"
-        elif event.duration_ms > ELEMENT_THRESHOLD_SCALAR * timing.dit_ms:
-            return "<EOC>"
-        else:
-            return ""
-        
-    
+        return MORSE_CODE.get(code, "*") 
 

@@ -14,12 +14,12 @@ class Event:
     
     
 class EventQueue:
-    def __init__(self, timing: TimingModel, decoder_queue: Queue, debug: bool=False):
+    def __init__(self, timing: TimingModel, decoder_queue: Queue, send_queue: Queue):
         self.event_queue = deque()
         self.decoder_queue = decoder_queue
         self.timing = timing
         self.down_times = []
-        self.debug = debug
+        self.send_queue = send_queue
                
     def enqueue_event(self, state: str) -> None:
         self.event_queue.append(Event(state, perf_counter_ns()))
@@ -31,24 +31,21 @@ class EventQueue:
             previous.duration_ms = elapsed
             
             if previous.state == 'DOWN' and elapsed > 0:
-                  self.down_times.append(elapsed)  
-            self.decoder_queue.put(self.dequeue_event())  
+                self.down_times.append(elapsed)
+            event = self.dequeue_event()
+            self.decoder_queue.put(event)
+            if self.send_queue is not None:
+                self.send_queue.put(event) 
                   
         # Bootstrap timings
         if len(self.down_times) > 1 and not self.timing.ready:
             if self.timing.try_bootstrap(self.down_times):
                 self.down_times.clear()
-                if self.debug:
-                    print(f"Timing found: dit={self.timing.dit_ms:.1f} ms,",
-                        f"dah={self.timing.dah_ms:.1f} ms")
                         
         # Update timings
         if len(self.down_times) >= 10 and self.timing.ready:
             if self.timing.refine_centers(self.down_times):
                 self.down_times.clear()
-                if self.debug:
-                    print(f"Timing found: dit={self.timing.dit_ms:.1f} ms,",
-                        f"dah={self.timing.dah_ms:.1f} ms")
         
     def peek_event(self, index: int=0) -> Event:
         if index >= len(self.event_queue):
