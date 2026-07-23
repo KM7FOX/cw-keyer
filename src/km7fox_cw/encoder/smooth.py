@@ -22,15 +22,11 @@ class SmoothKeyer:
             token = classify_event(event, self.timing)
             if token == '.':
                 Keyer.key_down(self.timing.dit_ms)
-                Keyer.key_up(self.timing.dit_ms)
+                Keyer.key_up()
             elif token == '-':
                 Keyer.key_down(self.timing.dit_ms * 3)
-                Keyer.key_up(self.timing.dit_ms)
+                Keyer.key_up()
             elif token == '<EOC>':
-                Keyer.key_up(self.timing.dit_ms * 2)
+                Keyer.key_up(self.timing.dit_ms * 3)
             elif token == '<EOW>':
-                Keyer.key_up(self.timing.dit_ms * 6)
-            
-            
-        
-        
+                Keyer.key_up(self.timing.dit_ms * 7)

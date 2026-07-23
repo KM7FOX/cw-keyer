@@ -12,19 +12,20 @@ class StraightKeyer:
     def __init__(self, smooth: bool=False):
         self.decoder_queue = Queue()
         self.timing = TimingModel()
+        self.smooth = smooth
         
         if smooth:
-            self.send_queue = Queue()
-            self.smooth_keyer = SmoothKeyer(self.send_queue, self.timing)
-            self.smooth_daemon = Thread(target=self.smooth_keyer.run, daemon=True)
+            send_queue = Queue()
+            smooth_keyer = SmoothKeyer(send_queue, self.timing)
+            self.smooth_daemon = Thread(target=smooth_keyer.run, daemon=True)
         else:
-            self.send_queue = None
+            send_queue = None
             
-        self.key_handler = StraightKeyHandler(self.timing, self.decoder_queue, self.send_queue)
+        self.key_handler = StraightKeyHandler(self.timing, self.decoder_queue, send_queue)
         self.key_daemon = Thread(target=self.key_handler.run, daemon=True)
         
     def run(self):
-        if self.send_queue is not None:
+        if self.smooth:
             self.smooth_daemon.start()
         self.key_daemon.start()
         decoder = Decoder(self.decoder_queue, self.timing).decode_stream()

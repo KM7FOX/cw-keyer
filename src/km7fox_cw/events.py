@@ -32,6 +32,7 @@ class EventQueue:
             
             if previous.state == 'DOWN' and elapsed > 0:
                 self.down_times.append(elapsed)
+                
             event = self.dequeue_event()
             self.decoder_queue.put(event)
             if self.send_queue is not None:
