@@ -21,7 +21,7 @@ def main():
             except:
                 print(f'Invalid speed: "{response[2:]}"')
                 continue
-            CWT.speed = speed
+            CWT.set_speed(speed)
             print(f'Speed set to {speed} WPM')
         elif response.upper() == '/R':  # repeat message
             play(message)
